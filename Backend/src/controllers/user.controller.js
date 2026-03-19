@@ -1,5 +1,6 @@
 const User=require("../models/user.model");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
 // Register User
 const registerUser = async (req, res) => {
@@ -46,8 +47,11 @@ const loginUser = async (req, res) => {
             return res.status(400).json({ message: "Invalid password" });
         }
 
+        const token=jwt.sign({ id: user._id }, process.env.JWT_SECRET)
+
         res.json({
             message: "Login successful",
+            token,
             user
         });
 
