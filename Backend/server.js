@@ -33,6 +33,7 @@ io.use((socket, next) => {
         }
 
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        console.log("Decoded JWT:", decoded);
 
         socket.userId = decoded.userId;
 
