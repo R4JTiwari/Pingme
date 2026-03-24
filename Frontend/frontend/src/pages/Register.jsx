@@ -20,7 +20,7 @@ function Register() {
 
     try {
 
-      await axios.post("http://localhost:3000/api/users/register", {
+      await axios.post("https://pingme-g1m4.onrender.com/api/users/register", {
         username,
         email,
         password,

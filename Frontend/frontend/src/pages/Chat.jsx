@@ -33,7 +33,7 @@ function Chat() {
     const fetchContacts = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:3000/api/contacts/${currentUserId}`
+          `https://pingme-g1m4.onrender.com/api/contacts/${currentUserId}`
         );
 
         setContacts(res.data);
@@ -58,7 +58,7 @@ function Chat() {
 
       try {
         const res = await axios.get(
-          `http://localhost:3000/api/messages/${currentUserId}/${selectedUser._id}`
+          `https://pingme-g1m4.onrender.com/api/messages/${currentUserId}/${selectedUser._id}`
         );
 
         setMessages(res.data);
@@ -75,7 +75,7 @@ function Chat() {
   //  Socket connection
   useEffect(() => {
 
-    const newSocket = io("http://localhost:3000", {
+    const newSocket = io("https://pingme-g1m4.onrender.com", {
       auth: {
         token: token
       }
@@ -100,7 +100,7 @@ function Chat() {
     try {
 
       const res = await axios.get(
-        `http://localhost:3000/api/users/phone/${phone}`
+        `https://pingme-g1m4.onrender.com/api/users/phone/${phone}`
       );
 
       if (res.data._id === currentUserId) {
@@ -109,7 +109,7 @@ function Chat() {
       }
 
       //  Add contact
-      await axios.post("http://localhost:3000/api/contacts/add", {
+      await axios.post("https://pingme-g1m4.onrender.com/api/contacts/add", {
         userId: currentUserId,
         contactId: res.data._id
       });
@@ -118,7 +118,7 @@ function Chat() {
 
       // refresh contacts
       const updated = await axios.get(
-        `http://localhost:3000/api/contacts/${currentUserId}`
+        `https://pingme-g1m4.onrender.com/api/contacts/${currentUserId}`
       );
       setContacts(updated.data);
 
