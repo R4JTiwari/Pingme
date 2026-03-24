@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 // Register User
 const registerUser = async (req, res) => {
 
-    const { username, email, password } = req.body;
+    const { username, email, password, phone } = req.body;
 
     const existingUser = await User.findOne({ email });
 
@@ -18,7 +18,8 @@ const registerUser = async (req, res) => {
     const newUser = await User.create({
         username,
         email,
-        password: hashedPassword
+        password: hashedPassword,
+        phone
     });
 
     res.status(201).json({
@@ -61,7 +62,23 @@ const loginUser = async (req, res) => {
 
 };
 
+const getUserByPhone = async (req, res) => {
+  try {
+    const user = await User.findOne({ phone: req.params.phone });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.json(user);
+
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
 module.exports = {
     registerUser,
-    loginUser
+    loginUser,
+    getUserByPhone
 };
