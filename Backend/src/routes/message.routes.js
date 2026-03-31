@@ -5,6 +5,7 @@ const authMiddleware = require("../middleware/auth");
 router.use(authMiddleware);
 
 const {
+    getConversations,
     sendMessage,
     getMessages
 } = require("../controllers/message.controller");

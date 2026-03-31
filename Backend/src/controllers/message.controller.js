@@ -1,4 +1,6 @@
 const Message = require("../models/message.model");
+const User = require("../models/user.model");
+
 
 
 // Send message
