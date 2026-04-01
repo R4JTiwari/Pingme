@@ -213,22 +213,26 @@ function Chat() {
 
       {/* Contacts */}
       <div className="flex-1 overflow-y-auto">
-        {contacts.map((c, i) => (
-          <div
-            key={i}
-            onClick={() => setSelectedUser(c.contact)}
-            className={`p-3 cursor-pointer transition border-b border-white/10 ${
-              selectedUser?._id === c.contact._id
-                ? "bg-white/20"
-                : "hover:bg-white/10"
-            }`}
-          >
-            <div className="font-medium">{c.contact.username}</div>
-            <div className="text-sm text-gray-300">
-              {c.contact.phone}
+        {contacts.map((c, i) => {
+          if (!c.contact) return null; // 🛑 skip null contacts
+
+          return (
+            <div
+              key={i}
+              onClick={() => setSelectedUser(c.contact)}
+              className={`p-3 cursor-pointer transition border-b border-white/10 ${
+                selectedUser?._id === c.contact._id
+                  ? "bg-white/20"
+                  : "hover:bg-white/10"
+              }`}
+            >
+              <div className="font-medium">{c.contact.username}</div>
+              <div className="text-sm text-gray-300">
+                {c.contact.phone}
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
 
