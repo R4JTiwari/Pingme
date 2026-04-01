@@ -1,13 +1,11 @@
 import { Routes, Route } from "react-router-dom";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
+import OtpAuth from "./pages/OtpAuth";
 import Chat from "./pages/Chat";
 
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<Login />} />
-      <Route path="/register" element={<Register />} />
+      <Route path="/" element={<OtpAuth />} />
       <Route path="/chat" element={<Chat />} />
     </Routes>
   );

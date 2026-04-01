@@ -12,7 +12,6 @@ function Chat() {
   const [phone, setPhone] = useState("");
   const [selectedUser, setSelectedUser] = useState(null);
   const [contacts, setContacts] = useState([]);
-
   const bottomRef = useRef();
 
   // ✅ Token handling
@@ -158,20 +157,27 @@ function Chat() {
   }, [messages]);
 
   return (
-  <div className="flex h-screen">
+  <div className="flex h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-black text-white">
 
     {/* Sidebar */}
-    <div className="w-1/4 bg-[#111b21] text-white flex flex-col">
+    <div className="w-1/4 backdrop-blur-lg bg-white/10 border-r border-white/20 flex flex-col">
 
       {/* Header */}
-      <div className="p-4 border-b border-gray-700 text-lg font-semibold">
-        Chats
+      <div className="p-4 flex justify-between items-center border-b border-white/20">
+        <span className="text-lg font-semibold">Chats</span>
+
+        <button
+          onClick={handleLogout}
+          className="bg-red-500/80 hover:bg-red-600 px-3 py-1 rounded-lg text-sm transition"
+        >
+          Logout
+        </button>
       </div>
 
       {/* Search */}
-      <div className="p-3">
+      <div className="p-3 space-y-2">
         <input
-          className="w-full p-2 rounded bg-[#202c33] text-white outline-none"
+          className="w-full p-2 rounded-lg bg-white/10 border border-white/20 placeholder-gray-300 text-white outline-none focus:ring-2 focus:ring-indigo-400"
           placeholder="Enter phone..."
           value={phone}
           onChange={(e) => setPhone(e.target.value)}
@@ -179,7 +185,7 @@ function Chat() {
 
         <button
           onClick={searchUser}
-          className="w-full mt-2 bg-green-600 hover:bg-green-700 p-2 rounded"
+          className="w-full bg-indigo-500 hover:bg-indigo-600 transition p-2 rounded-lg shadow"
         >
           Add Contact
         </button>
@@ -191,14 +197,14 @@ function Chat() {
           <div
             key={i}
             onClick={() => setSelectedUser(c.contact)}
-            className={`p-3 cursor-pointer border-b border-gray-800 transition ${
+            className={`p-3 cursor-pointer transition border-b border-white/10 ${
               selectedUser?._id === c.contact._id
-                ? "bg-[#2a3942]"
-                : "hover:bg-[#202c33]"
+                ? "bg-white/20"
+                : "hover:bg-white/10"
             }`}
           >
             <div className="font-medium">{c.contact.username}</div>
-            <div className="text-sm text-gray-400">
+            <div className="text-sm text-gray-300">
               {c.contact.phone}
             </div>
           </div>
@@ -207,17 +213,17 @@ function Chat() {
     </div>
 
     {/* Chat Section */}
-    <div className="w-3/4 flex flex-col bg-[#efeae2]">
+    <div className="w-3/4 flex flex-col backdrop-blur-lg bg-white/5">
 
       {/* Header */}
-      <div className="bg-[#202c33] text-white p-4 shadow">
-        {selectedUser
-          ? selectedUser.username
-          : "Select a contact"}
+      <div className="p-4 border-b border-white/20 bg-white/10 backdrop-blur flex items-center">
+        <span className="text-lg font-medium">
+          {selectedUser ? selectedUser.username : "Select a contact"}
+        </span>
       </div>
 
       {/* Messages */}
-      <div className="flex-1 p-4 overflow-y-auto space-y-2">
+      <div className="flex-1 p-4 overflow-y-auto space-y-3">
 
         {messages.map((msg, i) => (
           <div
@@ -229,10 +235,10 @@ function Chat() {
             }`}
           >
             <div
-              className={`px-4 py-2 rounded-lg max-w-xs ${
+              className={`px-4 py-2 rounded-2xl max-w-xs backdrop-blur-lg border ${
                 msg.sender === currentUserId
-                  ? "bg-[#d9fdd3]"
-                  : "bg-white"
+                  ? "bg-indigo-500/70 border-indigo-400"
+                  : "bg-white/10 border-white/20"
               }`}
             >
               {msg.content}
@@ -244,18 +250,18 @@ function Chat() {
       </div>
 
       {/* Input */}
-      <div className="bg-[#202c33] p-3 flex items-center gap-2">
+      <div className="p-3 flex items-center gap-2 border-t border-white/20 bg-white/10 backdrop-blur">
 
         <input
-          className="flex-1 p-2 rounded bg-[#2a3942] text-white outline-none"
+          className="flex-1 p-3 rounded-lg bg-white/10 border border-white/20 placeholder-gray-300 text-white outline-none focus:ring-2 focus:ring-indigo-400"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
-          placeholder="Type a message"
+          placeholder="Type a message..."
         />
 
         <button
           onClick={sendMessage}
-          className="bg-green-500 hover:bg-green-600 px-4 py-2 rounded text-white"
+          className="bg-indigo-500 hover:bg-indigo-600 px-5 py-2 rounded-lg shadow transition"
         >
           Send
         </button>
