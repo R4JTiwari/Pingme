@@ -2,27 +2,47 @@ import { useEffect, useState, useRef } from "react";
 import { io } from "socket.io-client";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
+import { useNavigate } from "react-router-dom";
 
 function Chat() {
 
   const [socket, setSocket] = useState(null);
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
-
   const [phone, setPhone] = useState("");
   const [selectedUser, setSelectedUser] = useState(null);
   const [contacts, setContacts] = useState([]);
+
   const bottomRef = useRef();
+  const navigate = useNavigate();
 
-  // ✅ Token handling
-  const token = localStorage.getItem("token");
+  const [token] = useState(localStorage.getItem("token"));
 
+  // 🔐 Protect route
+  useEffect(() => {
+    if (!token) {
+      navigate("/");
+    }
+  }, []);
+
+  // 🔐 Safe decode
   let currentUserId = null;
 
-  if (token) {
-    const decoded = jwtDecode(token);
-    currentUserId = decoded.userId;
+  try {
+    if (token) {
+      const decoded = jwtDecode(token);
+      currentUserId = decoded.userId;
+    }
+  } catch (err) {
+    localStorage.removeItem("token");
+    navigate("/");
   }
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    socket?.disconnect();
+    navigate("/");
+  };
 
   const receiverId = selectedUser?._id;
 
