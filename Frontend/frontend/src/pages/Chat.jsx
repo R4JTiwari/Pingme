@@ -92,28 +92,38 @@ function Chat() {
   }, [selectedUser]);
 
   //  Socket connection
-  useEffect(() => {
+    useEffect(() => {
+  if (!token) return; // 🛑 don't connect without token
 
-    const newSocket = io("https://pingme-g1m4.onrender.com", {
-      auth: {
-        token: token
-      }
-    });
+  const newSocket = io("https://pingme-g1m4.onrender.com", {
+    auth: {
+      token: token
+    },
+    transports: ["websocket"],        // 🔥 fix render websocket issue
+    reconnection: true,               // 🔁 auto reconnect
+    reconnectionAttempts: 5,
+    reconnectionDelay: 2000
+  });
 
-    newSocket.on("connect", () => {
-      console.log("Connected:", newSocket.id);
-    });
+  newSocket.on("connect", () => {
+    console.log("✅ Connected:", newSocket.id);
+  });
 
-    newSocket.on("receiveMessage", (msg) => {
-      setMessages((prev) => [...prev, msg]);
-    });
+  newSocket.on("connect_error", (err) => {
+    console.log("❌ Socket error:", err.message);
+  });
 
-    setSocket(newSocket);
+  newSocket.on("receiveMessage", (msg) => {
+    setMessages((prev) => [...prev, msg]);
+  });
 
-    return () => newSocket.disconnect();
+  setSocket(newSocket);
 
-  }, []);
+  return () => {
+    newSocket.disconnect();
+  };
 
+}, [token]); // ✅ IMPORTANT
   //  Search + Add Contact
   const searchUser = async () => {
     try {
